@@ -37,8 +37,43 @@ const MORSE_TABLE = {
     '-----':  '0',
 };
 
+function getMorseCodeStr(codeStr, digitCode) {
+    let result = '';
+
+    switch (digitCode) {
+        case '10':
+            result = '.';
+            break;
+        case '11':
+            result = '-';
+            break;
+    }
+
+    return codeStr + result;
+}
+
+function addSymbol(str, symbolCode) {
+    let result = ' ';
+
+    if (symbolCode !== '**********') {
+        const morseCode = [];
+        for (let i = 0; i < 5; i++) {
+            morseCode[i] = symbolCode.slice(i * 2, (i + 1) * 2);
+        }
+        const morseCodeStr = morseCode.reduce(getMorseCodeStr, '');
+        result = MORSE_TABLE[morseCodeStr];
+    }
+
+    return str + result;
+}
+
 function decode(expr) {
-    // write your solution here
+    const symbolsAmount = expr.length / 10;
+    const symbols = [];
+    for (let i = 0; i < symbolsAmount; i++) {
+        symbols[i] = expr.slice(i * 10, (i + 1) * 10);
+    }
+    return symbols.reduce(addSymbol, '');
 }
 
 module.exports = {
